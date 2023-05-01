@@ -24,7 +24,7 @@ after((done) => {
   done()
 })
 
-const SAMPLE_OBJECT_ID = 'aaaaaaaaaaaa' // 12 byte string
+const SAMPLE_OBJECT_ID = mongoose.Types.ObjectId().toString()
 
 describe('User API endpoints', () => {
     // Create a sample user for use in tests.

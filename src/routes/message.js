@@ -1,56 +1,69 @@
-const express = require('express')
+const express = require('express');
 const router = express.Router();
 
-const User = require('../models/user')
-const Message = require('../models/message')
+const Message = require('../models/message');
+const User = require('../models/user');
 
-/** Route to get all messages. */
-router.get('/', (req, res) => {
-    // TODO: Get all Message objects using `.find()`
+router.get('/', async (req, res) => {
+  try {
+    const messages = await Message.find();
+    res.json({ message: 'Messages retrieved successfully', data: messages });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
-    // TODO: Return the Message objects as a JSON list
-})
+router.get('/:messageId', async (req, res) => {
+  try {
+    const message = await Message.findOne({ _id: req.params.messageId });
+    res.json({ message: 'Message retrieved successfully', data: message });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
-/** Route to get one message by id. */
-router.get('/:messageId', (req, res) => {
-    // TODO: Get the Message object with id matching `req.params.id`
-    // using `findOne`
+router.post('/', async (req, res) => {
+  try {
+    let message = new Message(req.body);
+    await message.save();
 
-    // TODO: Return the matching Message object as JSON
-})
+    const user = await User.findById(message.author);
+    user.messages.unshift(message);
+    await user.save();
 
-/** Route to add a new message. */
-router.post('/', (req, res) => {
-    let message = new Message(req.body)
-    message.save()
-    .then(message => {
-        return User.findById(message.author)
-    })
-    .then(user => {
-        // console.log(user)
-        user.messages.unshift(message)
-        return user.save()
-    })
-    .then(() => {
-        return res.send(message)
-    }).catch(err => {
-        throw err.message
-    })
-})
+    res.status(201).json({ message: 'Message created successfully', data: message });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
-/** Route to update an existing message. */
-router.put('/:messageId', (req, res) => {
-    // TODO: Update the matching message using `findByIdAndUpdate`
+router.put('/:messageId', async (req, res) => {
+  try {
+    await Message.findByIdAndUpdate(req.params.messageId, req.body);
+    const updatedMessage = await Message.findOne({ _id: req.params.messageId });
 
-    // TODO: Return the updated Message object as JSON
-})
+    res.json({ message: 'Message updated successfully', data: updatedMessage });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
-/** Route to delete a message. */
-router.delete('/:messageId', (req, res) => {
-    // TODO: Delete the specified Message using `findByIdAndDelete`. Make sure
-    // to also delete the message from the User object's `messages` array
+router.delete('/:messageId', async (req, res) => {
+    try {
+      const deletedMessage = await Message.findByIdAndDelete(req.params.messageId);
+  
+      if (!deletedMessage) {
+        return res.status(404).json({ message: 'Message not found' });
+      }
+  
+      const user = await User.findById(deletedMessage.author);
+      user.messages = user.messages.filter(message => message.toString() !== req.params.messageId);
+      await user.save();
+  
+      res.json({ message: 'Message deleted successfully', data: { _id: req.params.messageId } });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  })
 
-    // TODO: Return a JSON object indicating that the Message has been deleted
-})
-
-module.exports = router
+module.exports = router;

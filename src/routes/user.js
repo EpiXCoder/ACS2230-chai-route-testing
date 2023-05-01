@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../models/user')
+const Message = require('../models/message')
 
 /** Route to get all users. */
 // GET localhost:3000/users/
