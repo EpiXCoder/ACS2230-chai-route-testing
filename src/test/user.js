@@ -5,7 +5,7 @@ const chai = require('chai')
 const chaiHttp = require('chai-http')
 
 const User = require('../models/user.js')
-const Message = require('../models/message.js')
+const Recipe = require('../models/recipe.js')
 
 chai.config.includeStack = true
 

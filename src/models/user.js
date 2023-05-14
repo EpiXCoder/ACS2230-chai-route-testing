@@ -4,16 +4,16 @@ const Schema = mongoose.Schema
 const UserSchema = new Schema({
     username: { type: String, required: true },
     password: { type: String, select: false },
-    messages : [{ type: Schema.Types.ObjectId, ref: "Message" }]
+    recipes : [{ type: Schema.Types.ObjectId, ref: "Recipe" }]
   })
 
 UserSchema.pre('findOne', function (next) {
-    this.populate('messages')
+    this.populate('recipes')
     next()
 })
 
 UserSchema.pre('find', function (next) {
-    this.populate('messages')
+    this.populate('recipes')
     next()
 })
   

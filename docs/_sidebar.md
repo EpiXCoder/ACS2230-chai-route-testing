@@ -1,0 +1,4 @@
+- # Menu
+    - ## [Home](/)
+    - ## [User Endpoints](user.md)
+    - ## [Recipe Endpoints](recipe.md)

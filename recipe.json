@@ -1,0 +1,27 @@
+  {
+    "name": "Pancakes",
+    "ingredients": [
+        {
+            "name": "Flour",
+            "quantity": "1 cup"
+        },
+        {
+            "name": "Eggs",
+            "quantity": "2"
+        },
+        {
+            "name": "Milk",
+            "quantity": "1 cup"
+        },
+        {
+            "name": "Sugar",
+            "quantity": "2 tablespoons"
+        },
+        {
+            "name": "Baking Powder",
+            "quantity": "1 tablespoon"
+        }
+    ],
+    "directions": "1. Mix all ingredients together in a large bowl until smooth. 2. Heat a lightly oiled griddle over medium-high heat. 3. Pour or scoop the batter onto the griddle. 4. Brown on both sides and serve hot.",
+    "user": "64602741aa816cb9759174b3"
+}
